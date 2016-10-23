@@ -16,12 +16,17 @@ class GeocodingController < ApplicationController
     # A URL-safe version of the street address, with spaces and other illegal
     #   characters removed, is in the variable @street_address_without_spaces.
     # ==========================================================================
+    url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + @street_address_without_spaces
+    raw_data = open(url).read
+    parsed_data = JSON.parse(raw_data)
 
+    latitude = parsed_data["results"][0]["geometry"]["location"]["lat"]
 
+    longitude = parsed_data["results"][0]["geometry"]["location"]["lng"]
 
-    @latitude = "Replace this string with your answer."
+    @latitude = latitude
 
-    @longitude = "Replace this string with your answer."
+    @longitude = longitude
 
     render("geocoding/street_to_coords.html.erb")
   end
